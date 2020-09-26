@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,17 +16,24 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+    MeowBottomNavigation navigation;
     private GoogleMap map;
     private LocationManager manager;
     Location currentlocation;
     private static int REQUEST_PERMISSION = 12;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +42,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
+        navigation=findViewById(R.id.bottomnavigation);
+        navigation.show(1,true);
+        navigation.add(new MeowBottomNavigation.Model(1,R.drawable.location));
+        navigation.add(new MeowBottomNavigation.Model(2,R.drawable.profile));
+        navigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                int item=model.getId();
+                Fragment fragment=null;
+                switch (item){
+                    case 1:
+                        fragment=new mapFragment();
+                        break;
+                    case 2:
+                        fragment=new profileFragment();
+                        break;
+                    default:
+                }
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.framenavigation,fragment);
+                fragmentTransaction.commit();
+                return null;
+            }
+        });
         }
     }
 
-    @Override
+       @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         manager = (LocationManager) getSystemService(LOCATION_SERVICE);
