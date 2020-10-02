@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class signUp extends AppCompatActivity  {
-    EditText name, email, password;
+    EditText fname,lname,age,phonenumber, email, password;
     Button signin, signup;
     TextView createaccount;
     private FirebaseAuth auth;
-    String mname,memail,mpassword;
+    String mfname,mlname,mage,mphonenumber,memail,mpassword;
     FirebaseFirestore firestore;
     DocumentReference reference;
 
@@ -35,19 +36,20 @@ public class signUp extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        name=findViewById(R.id.userName);
+        fname=findViewById(R.id.firstName);
+        lname=findViewById(R.id.lastName);
+        age=findViewById(R.id.age);
+        phonenumber=findViewById(R.id.phoneNumber);
         email=findViewById(R.id.enterEmailAddress);
         password=findViewById(R.id.password);
         signin=findViewById(R.id.signin);
         signup=findViewById(R.id.signup);
         createaccount=findViewById(R.id.createnewaccount);
-
         auth=FirebaseAuth.getInstance();
         FirebaseUser user=auth.getCurrentUser();
         if (user!=null){
             startActivity(new Intent(signUp.this,MainActivity.class));
-            finish();
-        }
+            finish(); }
         firestore=FirebaseFirestore.getInstance();
         signin.setOnClickListener(new View.OnClickListener() {
 
@@ -61,26 +63,30 @@ public class signUp extends AppCompatActivity  {
                         if (task.isSuccessful()){
                             startActivity(new Intent(signUp.this,MainActivity.class));
                             finish();
-                        }
-                    }
-                });
-            }
+                        } }}); }
         });
         signup.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                mname=name.getText().toString().trim();
+                mfname=fname.getText().toString().trim();
+                mlname=lname.getText().toString().trim();
+                mage=age.getText().toString().trim();
+                mphonenumber=phonenumber.getText().toString().trim();
                 memail=email.getText().toString().trim();
                 mpassword=password.getText().toString().trim();
                 auth.createUserWithEmailAndPassword(memail,mpassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        
                         if ( task.isSuccessful()){
                             String key=auth.getCurrentUser().getUid();
                             reference=firestore.collection("users").document(key);
                             Map<String,Object>map= new HashMap<>();
-                            map.put("User Name",mname);
+                            map.put("First Name",mfname);
+                            map.put("Last Name",mlname);
+                            map.put("Age",mage);
+                            map.put("Phone Number",mphonenumber);
                             map.put("Email",memail);
                             reference.set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -88,21 +94,17 @@ public class signUp extends AppCompatActivity  {
                                     if (task.isSuccessful()){
                                         Toast.makeText(signUp.this,"Successful",Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(signUp.this,MainActivity.class));
-                                        finish();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
+                                        finish(); } }}); } }}); }});
        createaccount.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               name.setVisibility(View.VISIBLE);
+               fname.setVisibility(View.VISIBLE);
+               lname.setVisibility(View.VISIBLE);
+               age.setVisibility(View.VISIBLE);
+               phonenumber.setVisibility(View.VISIBLE);
                signup.setVisibility(View.VISIBLE);
-           }
-       });
+               createaccount.setVisibility(View.INVISIBLE);
+                signin.setVisibility(View.INVISIBLE);
+           } });
     }
 }
