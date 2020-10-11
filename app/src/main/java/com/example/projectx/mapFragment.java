@@ -46,6 +46,7 @@ public class mapFragment extends Fragment implements OnMapReadyCallback, Locatio
     public mapFragment() {
         // Required empty public constructor
     }
+
     public static mapFragment newInstance(String param1, String param2) {
         mapFragment fragment = new mapFragment();
         Bundle args = new Bundle();
@@ -67,7 +68,8 @@ public class mapFragment extends Fragment implements OnMapReadyCallback, Locatio
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
-// isru always onview created sere new masgebat yalebhe.... leza new error yehonebhe
+
+    // isru always onview created sere new masgebat yalebhe.... leza new error yehonebhe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -79,37 +81,44 @@ public class mapFragment extends Fragment implements OnMapReadyCallback, Locatio
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map=googleMap;
-        manager=(LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-        String provider=manager.getBestProvider(new Criteria(),true);
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+        map = googleMap;
+        manager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
+        String provider = manager.getBestProvider(new Criteria(), true);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();
             return;
         }
-        currentlocation=manager.getLastKnownLocation(provider);
-        if(currentlocation!=null){
+        currentlocation = manager.getLastKnownLocation(provider);
+        if (currentlocation != null) {
             onLocationChanged(currentlocation);
         }
-        manager.requestLocationUpdates(provider,10000,0,this);
+        manager.requestLocationUpdates(provider, 10000, 0, this);
     }
 
-    public boolean checkPermission(){
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+    public boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION);
             return true;
-        }return false;
+        }
+        return false;
     }
-
 
 
     @Override
     public void onLocationChanged(Location location) {
-        LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-        if (ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             return;
-        }map.setMyLocationEnabled(true);
+        }
+        map.setMyLocationEnabled(true);
     }
 
     @Override
