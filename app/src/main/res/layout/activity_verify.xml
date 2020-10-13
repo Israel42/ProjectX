@@ -6,27 +6,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+
+    <in.aabhasjindal.otptextview.OtpTextView
         android:id="@+id/verifycode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="191dp"
-        android:ems="10"
-        android:inputType="number"
+        android:layout_marginTop="140dp"
+        app:bar_enabled="true"
+        app:bar_height="2dp"
+        app:height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:length="6"
+        app:otp_text_size="12sp"
+        app:width="40dp" />
 
     <Button
         android:id="@+id/btverify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="342dp"
         android:text="Verify"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifycode" />
+        app:layout_constraintTop_toBottomOf="@+id/verifycode"
+        app:layout_constraintVertical_bias="0.116" />
 </androidx.constraintlayout.widget.ConstraintLayout>

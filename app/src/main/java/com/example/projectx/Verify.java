@@ -23,8 +23,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import in.aabhasjindal.otptextview.OtpTextView;
+
 public class Verify extends AppCompatActivity {
-    EditText verify_code;
+   OtpTextView verify_code;
     Button verify;
     String verificationid;
     String Phone_Number;
@@ -43,9 +45,9 @@ public class Verify extends AppCompatActivity {
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String code=verify_code.getText().toString();
+                String code=verify_code.getOTP();
                 if(code.isEmpty()||code.length()<6){
-                    verify_code.setError("Verification code is Empty or less than 7");
+                    verify_code.showError();
                     verify_code.setFocusable(true);
                 }
                 Verifycode(code);
@@ -55,7 +57,7 @@ public class Verify extends AppCompatActivity {
 
     private void sendVerificationCode(String phone_number) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+251"+phone_number,
+                "+"+phone_number,
                 60,
                 TimeUnit.MILLISECONDS,
                 TaskExecutors.MAIN_THREAD,
@@ -73,7 +75,7 @@ public class Verify extends AppCompatActivity {
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
             String code=phoneAuthCredential.getSmsCode();
             if(code!=null){
-                verify_code.setText(code);
+                verify_code.setOTP(code);
                 Verifycode(code);
 
             }
