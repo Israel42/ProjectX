@@ -56,8 +56,8 @@ public class Verify extends AppCompatActivity {
     private void sendVerificationCode(String phone_number) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+251"+phone_number,
-                60,
-                TimeUnit.MILLISECONDS,
+                120,
+                TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
                 callback
         );

@@ -72,6 +72,7 @@
         android:hint="First Name"
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
+        android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,14 +129,14 @@
             android:layout_height="wrap_content"
             android:duplicateParentState="false"
             android:text="Male"
-            android:textColor="#FFFDFD" />
+            android:textColor="#000000" />
 
         <RadioButton
             android:id="@+id/female"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Female"
-            android:textColor="#FFFFFF" />
+            android:textColor="#000000" />
 
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
