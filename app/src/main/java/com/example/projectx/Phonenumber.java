@@ -2,6 +2,7 @@ package com.example.projectx;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,11 @@ public class Phonenumber extends AppCompatActivity implements View.OnClickListen
         login.setOnClickListener(this);
         videoView=findViewById(R.id.videoview);
         countryCodePicker=findViewById(R.id.countrycode);
+        Uri uri=Uri.parse("android.resource://"
+        + getPackageName()
+        + "/"
+        + R.raw.projectx);
+        videoView.setVideoURI(uri);
         videoView.start();
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
