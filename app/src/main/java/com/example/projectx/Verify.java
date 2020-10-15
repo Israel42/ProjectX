@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -97,16 +96,19 @@ public class Verify extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
            if (task.isSuccessful()){
-               FirebaseUser user=auth.getCurrentUser();
-               long creationTimeStamp=user.getMetadata().getCreationTimestamp();
-               long lastTimeStamp=user.getMetadata().getLastSignInTimestamp();
-               if(creationTimeStamp==lastTimeStamp){
-                   Intent intent=new Intent(Verify.this,signUp.class);
-                   intent.putExtra("phone",Phone_Number);
+               FirebaseUser user = task.getResult().getUser();
+               long creationTimestamp = user.getMetadata().getCreationTimestamp();
+               long lastSignInTimestamp = user.getMetadata().getLastSignInTimestamp();
+               if (creationTimestamp == lastSignInTimestamp) {
+                   Intent intent=new Intent(Verify.this,SignUp.class);
+                   intent.putExtra("UserPhone",Phone_Number);
                    startActivity(intent);
-               }else {
-                   startActivity(new Intent(Verify.this,MainActivity.class));
-               } finish();
+                   finish();
+               } else {
+                   Intent intent2=new Intent(Verify.this,Main.class);
+                   startActivity(intent2);
+                   finish();
+               }
            }else {
                Toast.makeText(Verify.this,task.getException().toString(), Toast.LENGTH_SHORT).show();
            }

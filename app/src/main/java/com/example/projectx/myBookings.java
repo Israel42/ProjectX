@@ -11,9 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class myBookings extends Fragment {
-    TextView hatelview, roomview, durationview;
-    ImageView qrcodeview;
-
 
    public myBookings() {
         // Required empty public constructor
